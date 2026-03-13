@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FinWise AI — Real AI Financial Advisor</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Animated background layers -->
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="app-container">
+
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">FinWise <em>AI</em></span>
+      </div>
+      <p class="tagline">Powered by Claude · Real AI · Real Advice</p>
+    </header>
+
+    <!-- INPUT CARD -->
+    <section class="card input-card">
+      <h2 class="card-title">
+        <span class="title-line"></span>
+        Tell us about your finances
+      </h2>
+
+      <div class="form-grid">
+        <div class="field-group">
+          <label for="income">Monthly Income</label>
+          <div class="input-wrap">
+            <span class="currency-symbol">$</span>
+            <input type="number" id="income" placeholder="e.g. 5000" min="0" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="expenses">Monthly Expenses</label>
+          <div class="input-wrap">
+            <span class="currency-symbol">$</span>
+            <input type="number" id="expenses" placeholder="e.g. 3000" min="0" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="savings">Current Savings</label>
+          <div class="input-wrap">
+            <span class="currency-symbol">$</span>
+            <input type="number" id="savings" placeholder="e.g. 10000" min="0" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="age">Your Age</label>
+          <div class="input-wrap">
+            <span class="currency-symbol">🎂</span>
+            <input type="number" id="age" placeholder="e.g. 30" min="18" max="80" />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="risk">Risk Tolerance</label>
+          <div class="select-wrap">
+            <select id="risk">
+              <option value="">— Select —</option>
+              <option value="low">🛡️ Low — Safety First</option>
+              <option value="medium">⚖️ Medium — Balanced Growth</option>
+              <option value="high">🚀 High — Aggressive Growth</option>
+            </select>
+            <span class="select-arrow">▾</span>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="goal">Primary Financial Goal</label>
+          <div class="select-wrap">
+            <select id="goal">
+              <option value="">— What are you saving for? —</option>
+              <option value="emergency fund">🔒 Build Emergency Fund</option>
+              <option value="buying a car">🚗 Buy a Car</option>
+              <option value="buying a house">🏠 Buy a House</option>
+              <option value="travel">✈️ Travel & Experiences</option>
+              <option value="retirement">🏦 Retirement Planning</option>
+              <option value="education">🎓 Education Fund</option>
+              <option value="starting a business">💼 Start a Business</option>
+              <option value="growing investments">📈 Grow Investments</option>
+            </select>
+            <span class="select-arrow">▾</span>
+          </div>
+        </div>
+
+        <div class="field-group full-width">
+          <label for="context">Extra context <span class="label-optional">(optional — AI reads this too)</span></label>
+          <textarea id="context" rows="2"
+            placeholder="e.g. I have $15k student debt, I'm self-employed, I want to retire by 50…"></textarea>
+        </div>
+      </div>
+
+      <button class="cta-btn" id="analyzeBtn" onclick="analyzeWithAI()">
+        <span class="btn-text">Get AI Advice</span>
+        <span class="btn-icon">→</span>
+      </button>
+      <p class="validation-msg" id="validationMsg"></p>
+    </section>
+
+    <!-- LOADING STATE -->
+    <div class="loading-card" id="loadingCard">
+      <div class="loading-inner">
+        <div class="ai-spinner">
+          <div class="spinner-ring"></div>
+          <span class="spinner-icon">◈</span>
+        </div>
+        <p class="loading-title">Claude is analysing your finances…</p>
+        <div class="loading-steps" id="loadingSteps">
+          <div class="lstep" id="lstep1">📊 Calculating your financial health score</div>
+          <div class="lstep" id="lstep2">⚖️ Applying the 50-30-20 rule</div>
+          <div class="lstep" id="lstep3">🛡️ Evaluating your emergency fund</div>
+          <div class="lstep" id="lstep4">📈 Researching investment strategies</div>
+          <div class="lstep" id="lstep5">🎯 Planning your goal roadmap</div>
+          <div class="lstep" id="lstep6">✍️ Writing personalised tips</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS SECTION -->
+    <section class="results-section" id="resultsSection">
+
+      <!-- Health Score ring -->
+      <div class="card score-card" id="scoreCard">
+        <h2 class="card-title"><span class="title-line"></span>Financial Health Score</h2>
+        <div class="score-display">
+          <svg class="score-ring" viewBox="0 0 200 200">
+            <circle class="ring-bg"   cx="100" cy="100" r="80"/>
+            <circle class="ring-fill" cx="100" cy="100" r="80" id="ringFill"/>
+          </svg>
+          <div class="score-center">
+            <span class="score-number" id="scoreNumber">0</span>
+            <span class="score-label">/ 100</span>
+          </div>
+        </div>
+        <p class="score-verdict" id="scoreVerdict"></p>
+      </div>
+
+      <!-- All AI-generated advice sections rendered here -->
+      <div id="aiSections"></div>
+
+      <!-- Action Plan / Tips -->
+      <div class="card tips-card" id="tipsCard" style="display:none">
+        <h2 class="card-title"><span class="title-line"></span>Action Plan</h2>
+        <ul class="tips-list" id="tipsList"></ul>
+      </div>
+
+    </section>
+
+    <footer class="app-footer">
+      <p>FinWise AI · Powered by Claude (Anthropic) · For informational purposes only. Not a substitute for licensed financial advice.</p>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
