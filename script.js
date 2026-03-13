@@ -8,7 +8,7 @@
 // ───────────────────────────────────────────────
 //  🔑 PASTE YOUR GEMINI API KEY HERE (replace the text between the quotes)
 // ───────────────────────────────────────────────
-var GEMINI_API_KEY = "AIzaSyBNLBF01E0UJ07xZdGPrmGOaFAdI3QuD4s";
+var GEMINI_API_KEY = "YOUR_API_KEY";
 
 // URL is built at runtime inside the function to avoid initialization errors
 function getGeminiURL() {
